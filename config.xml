@@ -1,0 +1,74 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<project>
+  <actions/>
+  <description></description>
+  <keepDependencies>false</keepDependencies>
+  <properties/>
+  <scm class="hudson.plugins.git.GitSCM" plugin="git@2.4.4">
+    <configVersion>2</configVersion>
+    <userRemoteConfigs>
+      <hudson.plugins.git.UserRemoteConfig>
+        <url>https://github.com/DSPradeep/flip-integration.git</url>
+        <credentialsId>117d37b1-209b-4121-84ce-2b419ed1acf4</credentialsId>
+      </hudson.plugins.git.UserRemoteConfig>
+    </userRemoteConfigs>
+    <branches>
+      <hudson.plugins.git.BranchSpec>
+        <name>*/master</name>
+      </hudson.plugins.git.BranchSpec>
+    </branches>
+    <doGenerateSubmoduleConfigurations>false</doGenerateSubmoduleConfigurations>
+    <submoduleCfg class="list"/>
+    <extensions/>
+  </scm>
+  <canRoam>true</canRoam>
+  <disabled>false</disabled>
+  <blockBuildWhenDownstreamBuilding>false</blockBuildWhenDownstreamBuilding>
+  <blockBuildWhenUpstreamBuilding>false</blockBuildWhenUpstreamBuilding>
+  <triggers/>
+  <concurrentBuild>false</concurrentBuild>
+  <builders>
+    <hudson.tasks.Shell>
+      <command>echo $PATH
+
+node --version
+npm --version
+
+#npm config set bin-links false
+
+printenv
+
+#For Linux on top of Vagrant OracleVM
+npm install --no-bin-links 
+#npm install
+
+
+#echo Setting the Symlink
+#ln -s /usr/bin/nodejs /usr/bin/node
+
+echo Removed older builds
+npm rebuild
+
+rm -f build/*
+
+#npm --no-bin-links install -D webpack
+#npm --no-bin-links install -D babel-core
+#npm --no-bin-links install -D babel-loader
+
+#npm install @elastic/plugin-helpers@7.1.8
+#plugin-helpers help
+
+node node_modules/plugin-helpers/bin/plugin-helpers.js build
+
+#npm run build
+
+echo Step 1 of generating zip file of plugin completed</command>
+    </hudson.tasks.Shell>
+  </builders>
+  <publishers/>
+  <buildWrappers>
+    <jenkins.plugins.nodejs.tools.NpmPackagesBuildWrapper plugin="nodejs@0.2.1">
+      <nodeJSInstallationName>Node8.1</nodeJSInstallationName>
+    </jenkins.plugins.nodejs.tools.NpmPackagesBuildWrapper>
+  </buildWrappers>
+</project>
